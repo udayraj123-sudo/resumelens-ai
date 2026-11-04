@@ -1,8 +1,23 @@
 /** @type {import('next').NextConfig} */
+
+const securityHeaders = [
+  // nobody can embed the site inside another site (clickjacking)
+  { key: "X-Frame-Options", value: "DENY" },
+  // browser must trust the file type we send
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  // do not leak full page addresses to other sites
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  // the site never needs camera, microphone or location
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  // always use https once a browser has visited
+  { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+];
+
 const nextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  poweredByHeader: false,
   turbopack: {
     rules: {
       "*.css": {
@@ -10,6 +25,9 @@ const nextConfig = {
         as: "*.css",
       },
     },
+  },
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
 };
 
