@@ -2,11 +2,17 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/security";
 import { startCompanySession } from "@/lib/session";
+import { allow, clientIp } from "@/lib/rateLimit";
 
 // used so a wrong email takes as long as a wrong password
 const DUMMY = hashPassword("not-a-real-password");
 
 export async function POST(request) {
+  // at most 10 attempts per 15 minutes from one network
+  if (!(await allow(db(), "company-login:" + clientIp(request), 10, 900))) {
+    return NextResponse.json({ error: "Too many attempts. Try again in 15 minutes." }, { status: 429 });
+  }
+
   let body = {};
   try {
     body = await request.json();

@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { analyzeResume } from "@/lib/analyze";
 import { getCompanyBySlug } from "@/lib/companyPublic";
 import { getUsage } from "@/lib/usage";
+import { allow, clientIp } from "@/lib/rateLimit";
 
 export const maxDuration = 60;
 
@@ -18,6 +19,11 @@ export async function POST(request, { params }) {
   try {
     const { slug } = await params;
     const supabase = db();
+
+    // stop one network from flooding applications (10 per hour)
+    if (!(await allow(supabase, "apply:" + clientIp(request), 10, 3600))) {
+      return bad("Too many applications from your network. Please try again later.", 429);
+    }
 
     const company = await getCompanyBySlug(supabase, slug);
     if (!company) return bad("Company not found.", 404);

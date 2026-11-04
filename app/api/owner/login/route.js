@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
 import { safeEqual } from "@/lib/security";
 import { startOwnerSession } from "@/lib/session";
+import { db } from "@/lib/db";
+import { allow, clientIp } from "@/lib/rateLimit";
 
 export async function POST(request) {
+  // at most 8 attempts per 15 minutes from one network
+  if (!(await allow(db(), "owner-login:" + clientIp(request), 8, 900))) {
+    return NextResponse.json({ error: "Too many attempts. Try again in 15 minutes." }, { status: 429 });
+  }
+
   let body = {};
   try {
     body = await request.json();
