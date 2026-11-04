@@ -1,9 +1,16 @@
 import Link from "next/link";
 import Logo from "./Logo";
 
+// Change this to your real support email address
+const SUPPORT_EMAIL = "resumelens.hr@gmail.com";
+
 export default function Footer() {
-  const supportMessage = "Hi! I need help with ResumeLens AI.";
-  const supportLink = "https://wa.me/918828783516?text=" + encodeURIComponent(supportMessage);
+  const subject = "ResumeLens AI support";
+  const supportLink =
+    "https://mail.google.com/mail/?view=cm&fs=1&to=" +
+    encodeURIComponent(SUPPORT_EMAIL) +
+    "&su=" +
+    encodeURIComponent(subject);
 
   return (
     <footer className="border-t border-white/10">
@@ -15,7 +22,13 @@ export default function Footer() {
         <div className="flex gap-6">
           <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-white">Terms of Service</Link>
-          <a href={supportLink} target="_blank" rel="noopener noreferrer" className="hover:text-white">
+          <a
+            href={supportLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={SUPPORT_EMAIL}
+            className="hover:text-white"
+          >
             Contact Support
           </a>
         </div>
