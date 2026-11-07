@@ -29,6 +29,15 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // old single-company pages were removed, so old links are sent to the right place
+  async redirects() {
+    return [
+      { source: "/admin", destination: "/company/login", permanent: false },
+      { source: "/admin/:path*", destination: "/company/login", permanent: false },
+      { source: "/candidate", destination: "/", permanent: false },
+      { source: "/candidate/:path*", destination: "/", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;
