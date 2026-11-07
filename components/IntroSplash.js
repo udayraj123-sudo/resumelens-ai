@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 
 const SIZE = 168; // logo size in the middle of the screen
-const BG = "#07070c"; // overlay colour: change this to match the page background
+const BG = "#06060a"; // overlay colour: change this to match the page background
 
 const CSS = `
 #rl-intro{display:none}

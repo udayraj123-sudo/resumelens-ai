@@ -4,7 +4,7 @@ export default function robots() {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/owner", "/admin", "/company", "/setup", "/api"],
+        disallow: ["/owner", "/admin", "/company", "/setup", "/verify", "/reset", "/api"],
       },
     ],
   };

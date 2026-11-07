@@ -37,3 +37,101 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .rl-smoke, .rl-shine::after { animation: none; }
 }
+
+/* ===== Theme: dark glass with a white glow, beige buttons ===== */
+
+/* indigo / violet colours become beige and warm gold everywhere */
+@theme {
+  --color-indigo-300: #cdb988;
+  --color-indigo-400: #cdb988;
+  --color-indigo-500: #e8dcc4;
+  --color-indigo-600: #d8c9a8;
+  --color-violet-300: #cdb988;
+  --color-violet-400: #cdb988;
+  --color-violet-500: #e8dcc4;
+  --color-violet-600: #d8c9a8;
+}
+
+html {
+  background: #06060a;
+}
+body {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+  color: #f5f1e8;
+}
+
+/* soft white glow at the top of every page */
+body::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  left: 50%;
+  top: -340px;
+  width: min(1100px, 100%);
+  height: 760px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(255, 255, 255, 0.6) 0,
+    rgba(244, 236, 218, 0.34) 24%,
+    rgba(232, 220, 196, 0.13) 46%,
+    transparent 70%
+  );
+  filter: blur(14px);
+}
+
+/* glass cards */
+div[class*="bg-white/"],
+section[class*="bg-white/"],
+form[class*="bg-white/"],
+li[class*="bg-white/"],
+article[class*="bg-white/"] {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+select option {
+  background-color: #17171d;
+  color: #f5f1e8;
+}
+
+/* every button is soft beige with dark text */
+button[class*="bg-white/"],
+a[class*="bg-white/"],
+[class*="from-indigo-500"],
+[class*="from-violet-500"],
+.bg-indigo-500,
+.bg-indigo-600,
+.bg-violet-500 {
+  background-image: none !important;
+  background-color: #e8dcc4 !important;
+  color: #1b150c !important;
+  border-color: #cdbf9f !important;
+}
+button[class*="bg-white/"]:hover,
+a[class*="bg-white/"]:hover,
+[class*="from-indigo-500"]:hover,
+[class*="from-violet-500"]:hover,
+.bg-indigo-500:hover,
+.bg-indigo-600:hover {
+  background-color: #f1e8d4 !important;
+}
+button:disabled {
+  opacity: 0.6;
+}
+
+/* danger buttons: beige with a light red hint */
+button[class*="rose"],
+button[class*="red-"] {
+  background-color: #efd3cc !important;
+  color: #7a1f14 !important;
+  border-color: #d9a79d !important;
+}
+
+::selection {
+  background: #e8dcc4;
+  color: #1b150c;
+}

@@ -22,7 +22,7 @@ export async function POST(request) {
 
   const { data: company } = await db()
     .from("companies")
-    .select("id,status,password_hash")
+    .select("id,status,password_hash,email_verified_at")
     .eq("email", email)
     .maybeSingle();
 
@@ -30,6 +30,12 @@ export async function POST(request) {
   if (!company || !ok) {
     await new Promise((r) => setTimeout(r, 700));
     return NextResponse.json({ error: "Wrong email or password" }, { status: 401 });
+  }
+  if (!company.email_verified_at) {
+    return NextResponse.json(
+      { error: "Please confirm your email first. We sent you a link when you signed up.", code: "unverified" },
+      { status: 403 }
+    );
   }
   if (company.status !== "active") {
     return NextResponse.json({ error: "This account is paused. Contact the owner." }, { status: 403 });
